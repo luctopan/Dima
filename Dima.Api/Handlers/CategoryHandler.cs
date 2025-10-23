@@ -25,7 +25,7 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
 
             return new Response<Category?>(category, 201, "Categoria criada com sucesso.");
         }
-        catch (Exception ex)
+        catch
         {
             return new Response<Category?>(null, 500, "Não foi possível criar a categoria.");
         }
@@ -122,7 +122,7 @@ public class CategoryHandler(AppDbContext context) : ICategoryHandler
         }
         catch
         {
-            return new PagedResponse<List<Category>>(null, 500, "Não foi possível consultar as categorias.");
+            return new PagedResponse<List<Category>?>(null, 500, "Não foi possível consultar as categorias.");
         }
     }
 }

@@ -118,6 +118,7 @@ C:\dev\projects\Dima\Dima.Api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Wi
 C:\dev\projects\Dima\Dima.Api\bin\Debug\net8.0\Dima.Core.dll
 C:\dev\projects\Dima\Dima.Api\bin\Debug\net8.0\Dima.Core.pdb
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.csproj.AssemblyReference.cache
+C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\rpswa.dswa.cache.json
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.GeneratedMSBuildEditorConfig.editorconfig
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.AssemblyInfoInputs.cache
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.AssemblyInfo.cs
@@ -125,8 +126,12 @@ C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.csproj.CoreCompileInputs
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.MvcApplicationPartsAssemblyInfo.cs
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.MvcApplicationPartsAssemblyInfo.cache
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.sourcelink.json
+C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\scopedcss\bundle\Dima.Api.styles.css
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\staticwebassets.build.json
+C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\staticwebassets.development.json
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.csproj.Up2Date
@@ -135,8 +140,3 @@ C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\refint\Dima.Api.dll
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.pdb
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\Dima.Api.genruntimeconfig.cache
 C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\ref\Dima.Api.dll
-C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\rpswa.dswa.cache.json
-C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\rjimswa.dswa.cache.json
-C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
-C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
-C:\dev\projects\Dima\Dima.Api\obj\Debug\net8.0\staticwebassets.build.json.cache

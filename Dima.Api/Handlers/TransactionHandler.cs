@@ -1,7 +1,7 @@
 using Dima.Api.Data;
+using Dima.Core.Common.Extensions;
 using Dima.Core.Handlers;
 using Dima.Core.Models;
-using Dima.Core.Requests.Categories;
 using Dima.Core.Requests.Transactions;
 using Dima.Core.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -83,7 +83,7 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
         }
     }
 
-    public async Task<Response<Transaction?>> GetByIdAsync(GetCategoryByIdRequest request)
+    public async Task<Response<Transaction?>> GetByIdAsync(GetTransactionByIdRequest request)
     {
         try
         {
@@ -99,8 +99,48 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
         }
     }
 
-    public Task<PagedResponse<List<Transaction>?>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
+    public async Task<PagedResponse<List<Transaction>?>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
     {
-        throw new NotImplementedException();
+        try
+        {
+            request.StartDate ??= DateTime.Now.GetFirstDay();
+            request.EndDate ??= DateTime.Now.GetLastDay();
+        }
+        catch
+        {
+            return new PagedResponse<List<Transaction>?>(null, 500,
+                "Não foi possível determinar a data de início ou término.");
+        }
+
+        try
+        {
+            var query = context
+                .Transactions
+                .AsNoTracking()
+                .Where(x
+                    => x.CreatedAt >= request.StartDate &&
+                       x.CreatedAt <= request.EndDate &&
+                       x.UserId == request.UserId)
+                .OrderBy(x => x.CreatedAt);
+
+            var transactions = await query
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToListAsync();
+
+            var count = await query.CountAsync();
+
+            return new PagedResponse<List<Transaction>?>(
+                transactions,
+                count,
+                request.PageNumber,
+                request.PageSize);
+        }
+        catch
+        {
+            return new PagedResponse<List<Transaction>?>(null, 500,
+                "Não foi possível obter as transações.");
+        }
+        
     }
 }

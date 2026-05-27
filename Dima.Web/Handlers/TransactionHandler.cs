@@ -11,25 +11,30 @@ public class TransactionHandler(IHttpClientFactory httpClientFactory) : ITransac
 {
     private readonly HttpClient _client = httpClientFactory.CreateClient(Configuration.HttpClientName);
     
-    public Task<Response<Transaction?>> CreateAsync(CreateTransactionRequest request)
+    public async Task<Response<Transaction?>> CreateAsync(CreateTransactionRequest request)
     {
-        throw new NotImplementedException();
+        var result = await _client.PostAsJsonAsync($"v1/transactions", request);
+        return await result.Content.ReadFromJsonAsync<Response<Transaction?>>()
+               ?? new Response<Transaction?>(null, 400, "Não foi possível criar a transação.");
     }
 
-    public Task<Response<Transaction?>> UpdateAsync(UpdateTransactionRequest request)
+    public async Task<Response<Transaction?>> UpdateAsync(UpdateTransactionRequest request)
     {
-        throw new NotImplementedException();
+        var result = await _client.PutAsJsonAsync($"v1/transactions/{request.Id}", request);
+        return await result.Content.ReadFromJsonAsync<Response<Transaction?>>()
+               ?? new Response<Transaction?>(null, 400, "Não foi possível atualizar sua transação.");
     }
 
-    public Task<Response<Transaction?>> DeleteAsync(DeleteTransactionRequest request)
+    public async Task<Response<Transaction?>> DeleteAsync(DeleteTransactionRequest request)
     {
-        throw new NotImplementedException();
+        var result = await _client.DeleteAsync($"v1/transactions/{request.Id}");
+        return await result.Content.ReadFromJsonAsync<Response<Transaction?>>()
+               ?? new Response<Transaction?>(null, 400, "Não foi possível excluir a transação.");
     }
 
-    public Task<Response<Transaction?>> GetByIdAsync(GetTransactionByIdRequest request)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<Response<Transaction?>> GetByIdAsync(GetTransactionByIdRequest request)
+        => await _client.GetFromJsonAsync<Response<Transaction?>>($"v1/transactions/{request.Id}")
+               ?? new Response<Transaction?>(null, 400, "Não foi possível obter a transação.");
 
     public async Task<PagedResponse<List<Transaction>?>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
     {

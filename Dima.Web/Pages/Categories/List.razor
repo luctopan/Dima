@@ -1,0 +1,20 @@
+@page "/categorias"
+@inherits ListCategoriesPage
+
+<MudText Typo="Typo.h3">Categorias</MudText>
+<div class="d-flex justify-end">
+    <MudButton
+        Variant="Variant.Filled"
+        Color="Color.Primary"
+        StartIcon="@Icons.TwoTone.Add"
+        Href="/categorias/adicionar">
+        NOVA CATEGORIA
+    </MudButton>
+</div>
+
+<MudDataGrid Items="@Categories" Class="pt-4">
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Title="#" />
+        <PropertyColumn Property="x => x.Title" Title="Categoria" />
+    </Columns>
+</MudDataGrid>

@@ -47,10 +47,10 @@ public class TransactionHandler(IHttpClientFactory httpClientFactory) : ITransac
             ? request.EndDate.Value.ToString(format)
             : DateTime.Now.GetLastDay().ToString(format);
         
-        var url = $"v1/transactions?startDate={startDate}&endDate{endDate}";
+        var url = $"v1/transactions?startDate={startDate}&endDate={endDate}";
 
         return await _client.GetFromJsonAsync<PagedResponse<List<Transaction>?>>(url)
             ?? new PagedResponse<List<Transaction>>(null, 400, "Não foi possível obter as transações.");
-
     }
+    
 }

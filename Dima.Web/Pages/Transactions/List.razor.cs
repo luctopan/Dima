@@ -31,22 +31,44 @@ public partial class ListTransactionsPage : ComponentBase
 
     [Inject]
     public ISnackbar Snackbar { get; set; } = null!;
+
     [Inject]
     public IDialogService DialogService { get; set; } = null!;
+
     [Inject]
     public ITransactionHandler Handler { get; set; } = null!;
 
     #endregion
-    
+
     #region Overrides
 
     protected override async Task OnInitializedAsync()
-        => await GetTransactions();
-    
+        => await GetTransactionsAsync();
+
     #endregion
 
     #region Public Methods
-    
+
+    public async Task OnSearchAsync()
+    {
+        await GetTransactionsAsync();
+        StateHasChanged();
+    }
+
+    public async void OnDeleteButtonClickedAsync(long id, string title)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "ATENÇÃO",
+            $"Ao prosseguir o lançamento {title} será excluído. Esta ação é irreversível! Deseja continuar?",
+            yesText: "EXCLUIR",
+            cancelText: "Cancelar");
+
+        if (result is true)
+            await OnDeleteAsync(id, title);
+
+        StateHasChanged();
+    }
+
     public Func<Transaction, bool> Filter => transaction =>
     {
         if (string.IsNullOrEmpty(SearchTerm))
@@ -54,14 +76,13 @@ public partial class ListTransactionsPage : ComponentBase
 
         return transaction.Id.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
                || transaction.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase);
-
     };
-    
+
     #endregion
 
     #region Private Methods
 
-    private async Task GetTransactions()
+    private async Task GetTransactionsAsync()
     {
         IsBusy = true;
 
@@ -74,13 +95,9 @@ public partial class ListTransactionsPage : ComponentBase
                 PageNumber = 1,
                 PageSize = 1000
             };
-
             var result = await Handler.GetByPeriodAsync(request);
-
             if (result.IsSuccess)
                 Transactions = result.Data ?? [];
-
-            IsBusy = false;
         }
         catch (Exception ex)
         {
@@ -90,10 +107,34 @@ public partial class ListTransactionsPage : ComponentBase
         {
             IsBusy = false;
         }
-        
     }
-    
-    
+
+    private async Task OnDeleteAsync(long id, string title)
+    {
+        IsBusy = true;
+
+        try
+        {
+            var result = await Handler.DeleteAsync(new DeleteTransactionRequest { Id = id });
+            if (result.IsSuccess)
+            {
+                Snackbar.Add($"Lançamento {title} removido!", Severity.Success);
+                Transactions.RemoveAll(x => x.Id == id);
+            }
+            else
+            {
+                Snackbar.Add(result.Message, Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
 
     #endregion
 }

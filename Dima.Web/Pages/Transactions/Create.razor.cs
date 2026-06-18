@@ -21,15 +21,15 @@ public partial class CreateTransactionPage : ComponentBase
     
     [Inject]
     public ITransactionHandler TransactionHandler { get; set; } = null!;
-    
+
     [Inject]
-    public ICategoryHandler CategoryHandler { get; set; }
+    public ICategoryHandler CategoryHandler { get; set; } = null!;
     
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
-    
+
     [Inject]
-    public ISnackbar Snackbar { get; set; }
+    public ISnackbar Snackbar { get; set; } = null!;
 
     #endregion
 
@@ -75,7 +75,7 @@ public partial class CreateTransactionPage : ComponentBase
             if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
-                NavigationManager.NavigateTo("/transactions");
+                NavigationManager.NavigateTo("/lancamentos/historico");
             }
             else
                 Snackbar.Add(result.Message, Severity.Error);

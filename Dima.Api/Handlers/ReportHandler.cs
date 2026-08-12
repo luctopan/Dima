@@ -73,27 +73,31 @@ public class ReportHandler(AppDbContext context) : IReportHandler
     public async Task<Response<FinancialSummary?>> GetFinancialSummaryReportAsync(GetFinancialSummaryRequest request)
     {
         var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-
+        
         try
         {
             var data = await context
                 .Transactions
                 .AsNoTracking()
-                .Where(x => x.UserId == request.UserId
-                            && x.PaidOrReceivedAt >= startDate
-                            && x.PaidOrReceivedAt <= DateTime.Now
-                ).GroupBy(x => 1)
+                .Where(
+                    x => x.UserId == request.UserId
+                         && x.PaidOrReceivedAt >= startDate
+                         && x.PaidOrReceivedAt <= DateTime.Now
+                )
+                .GroupBy(x => 1)
                 .Select(x => new FinancialSummary(
                     request.UserId,
                     x.Where(ty => ty.Type == ETransactionType.Deposit).Sum(t => t.Amount),
                     x.Where(ty => ty.Type == ETransactionType.Withdraw).Sum(t => t.Amount))
-                ).FirstOrDefaultAsync();
-            
+                )
+                .FirstOrDefaultAsync();
+
             return new Response<FinancialSummary?>(data);
         }
         catch
         {
-            return new Response<FinancialSummary?>(null, 500, "Não foi possível obter o resultado financeiro.");
+            return new Response<FinancialSummary?>(null, 500,
+                "Não foi possível obter o resultado financeiro");
         }
     }
 }

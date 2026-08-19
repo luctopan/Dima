@@ -5,7 +5,7 @@ using MudBlazor;
 
 namespace Dima.Web.Components.Reports;
 
-public partial class ExpensesByCategoryChartComponent : ComponentBase
+public partial class IncomesByCategoryChartComponent : ComponentBase
 {
     #region Properties
 
@@ -28,13 +28,13 @@ public partial class ExpensesByCategoryChartComponent : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await GetExpensesByCategoryAsync();
+        await GetIncomesByCategoryAsync();
     }
 
-    private async Task GetExpensesByCategoryAsync()
+    private async Task GetIncomesByCategoryAsync()
     {
-        var request = new GetExpensesByCategoryRequest();
-        var result = await Handler.GetExpensesByCategoryReportAsync(request);
+        var request = new GetIncomesByCategoryRequest();
+        var result = await Handler.GetIncomesByCategoryReportAsync(request);
 
         if (!result.IsSuccess || result.Data is null)
         {
@@ -44,8 +44,8 @@ public partial class ExpensesByCategoryChartComponent : ComponentBase
 
         foreach (var item in result.Data)
         {
-            Labels.Add($"{item.Category} ({item.Expenses:C})");
-            Data.Add(-(double)item.Expenses);
+            Labels.Add($"{item.Category} ({item.Incomes:C})");
+            Data.Add((double)item.Incomes);
         }
         
     }

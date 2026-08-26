@@ -14,33 +14,33 @@ public class OrderMapping : IEntityTypeConfiguration<Order>
 
         builder.Property(x => x.Number)
             .IsRequired()
-            .HasColumnName("CHAR")
+            .HasColumnType("CHAR")
             .HasMaxLength(8);
         
         builder.Property(x => x.ExternalReference)
             .IsRequired(false)
-            .HasColumnName("VARCHAR")
+            .HasColumnType("VARCHAR")
             .HasMaxLength(60);
 
         builder.Property(x => x.Gateway)
             .IsRequired()
-            .HasColumnName("SMALLINT");
+            .HasColumnType("SMALLINT");
 
         builder.Property(x => x.CreatedAt)
             .IsRequired()
-            .HasColumnName("DATETIME2");
+            .HasColumnType("DATETIME2");
         
         builder.Property(x => x.UpdatedAt)
             .IsRequired()
-            .HasColumnName("DATETIME2");
+            .HasColumnType("DATETIME2");
         
         builder.Property(x => x.Status)
             .IsRequired()
-            .HasColumnName("SMALLINT");
+            .HasColumnType("SMALLINT");
         
         builder.Property(x => x.UserId)
             .IsRequired(false)
-            .HasColumnName("VARCHAR")
+            .HasColumnType("VARCHAR")
             .HasMaxLength(160);
 
         builder.HasOne(x => x.Product).WithMany();

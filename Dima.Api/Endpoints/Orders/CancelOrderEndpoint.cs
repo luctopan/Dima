@@ -28,6 +28,6 @@ public class CancelOrderEndpoint : IEndpoint
         var result = await handler.CancelAsync(request);
         return result.IsSuccess
             ? TypedResults.Ok(result)
-            : TypedResults.BadRequest();
+            : TypedResults.BadRequest(result);
     }
 }

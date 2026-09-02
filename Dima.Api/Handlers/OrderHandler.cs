@@ -143,6 +143,8 @@ public class OrderHandler(AppDbContext context) : IOrderHandler
         {
             order = await context
                 .Orders
+                .Include(x => x.Product)
+                .Include(x => x.Voucher)
                 .FirstOrDefaultAsync(x =>
                     x.Id == request.Id
                     && x.UserId == request.UserId);
@@ -199,6 +201,8 @@ public class OrderHandler(AppDbContext context) : IOrderHandler
         {
             order = await context
                 .Orders
+                .Include(x => x.Product)
+                .Include(x => x.Voucher)
                 .FirstOrDefaultAsync(x =>
                     x.Id == request.Id
                     && x.UserId == request.UserId);

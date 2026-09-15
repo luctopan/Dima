@@ -43,4 +43,76 @@ public partial class CheckoutPage : ComponentBase
     public ISnackbar Snackbar { get; set; } = null!;
 
     #endregion
+
+	#region Methods
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			var result = await ProductHandler.GetBySlugAsync(new GetProductBySlugRequest
+			{
+				Slug = ProductSlug
+			});
+
+			if (!result.IsSuccess)
+			{
+				Snackbar.Add("Não foi possível obter o produto.", Severity.Error);
+				IsValid = false;
+				return;
+			}
+			
+			Product = result.Data;
+		}
+		catch
+		{
+			Snackbar.Add("Não foi possível obter o produto.", Severity.Error);
+			IsValid = false;
+			return;
+		}
+
+		if (Product is null)
+		{
+			Snackbar.Add("Não foi possível obter o produto.", Severity.Error);
+			IsValid = false;
+			return;
+		}
+
+		if (!string.IsNullOrEmpty(VoucherNumber))
+		{
+			try
+			{
+				var result = await VoucherHandler.GetByNumberAsync(new GetVoucherByNumberRequest
+				{
+					Number = VoucherNumber.Replace("-", "")
+				});
+
+				if (!result.IsSuccess)
+				{
+					VoucherNumber = string.Empty;
+					Snackbar.Add("Não foi possível obter o voucher.", Severity.Error);
+				}
+
+				if (result.Data is null)
+				{
+					VoucherNumber = string.Empty;
+					Snackbar.Add("Não foi possível obter o voucher.", Severity.Error);
+				}
+				
+				Voucher = result.Data;
+			}
+			catch
+			{
+				VoucherNumber = string.Empty;
+				Snackbar.Add("Não foi possível obter o voucher.", Severity.Error);
+			}
+		}
+		
+		IsValid = true;
+		Total = Product.Price - (Voucher?.Amount ?? 0);
+		
+	}
+	
+
+	#endregion
 }

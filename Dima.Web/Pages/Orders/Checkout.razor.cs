@@ -20,6 +20,14 @@ public partial class CheckoutPage : ComponentBase
 
     #region Properties
 
+    public PatternMask Mask { get; set; } = new("####-####")
+    {
+	    MaskChars = [new MaskChar('#', @"[0-9a-fA-F]")],
+	    Placeholder = '_',
+	    CleanDelimiters = true,
+	    Transformation = AllUpperCase
+    };
+
     public bool IsBusy { get; set; }
     public bool IsValid { get; set; }
     public CreateOrderRequest InputModel { get; set; } = new();
@@ -112,7 +120,36 @@ public partial class CheckoutPage : ComponentBase
 		Total = Product.Price - (Voucher?.Amount ?? 0);
 		
 	}
-	
+
+	public async Task OnValidSubmitAsync()
+	{
+		IsBusy = true;
+
+		try
+		{
+			var request = new CreateOrderRequest
+			{
+				ProductId = Product!.Id,
+				VoucherId = Voucher?.Id ?? null
+			};
+			
+			var result = await OrderHandler.CreateAsync(request);
+			if (result.IsSuccess)
+				NavigationManager.NavigateTo($"/pedidos/{result.Data!.Number}");
+			else
+				Snackbar.Add(result.Message, Severity.Success);
+		}
+		catch (Exception ex)
+		{
+			Snackbar.Add(ex.Message, Severity.Error);
+		}
+		finally
+		{
+			IsBusy = false;
+		}
+	} 
 
 	#endregion
+	
+	private static char AllUpperCase(char c) => c.ToString().ToUpperInvariant()[0];
 }
